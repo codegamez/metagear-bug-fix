@@ -1,12 +1,9 @@
 {
-	"name": "MetaGear Bug Fix",
+	"name": "MetaGear Website Bug Fix (UNOFFICIAL)",
 	"version": "0.0.1",
 	"manifest_version": 3,
 	"description": "this is an unofficial extension and has no connection to the metagear team. I just create it to solve some of my problems with the website.",
 	"homepage_url": "https://codegames.ir",
-	"background": {
-		"service_worker": "background.js"
-	},
 	"content_scripts": [
 		{
 			"matches": [
@@ -36,5 +33,6 @@
 	"host_permissions": [
 		"https://apps.metagear.game/*",
 		"http://apps.metagear.game/*"
-	]
+	],
+	"icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" }
 }

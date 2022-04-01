@@ -115,12 +115,24 @@ const intervalId = setInterval(() => {
 			slots.filter((s) => {
 				const image = images[s.type]
 				if (!image) return false
+				console.log(
+					"x",
+					Math.abs((s.position.x * 400 * imageSize) / imageRealSize) -
+						image.size / 3,
+					imageWidth
+				)
+				console.log(
+					"y",
+					Math.abs((s.position.y * 400 * imageSize) / imageRealSize) -
+						image.size / 3,
+					imageHeight
+				)
 				const t =
 					Math.abs((s.position.x * 400 * imageSize) / imageRealSize) -
-						image.size >
+						image.size / 3 >
 						imageWidth ||
 					Math.abs((s.position.y * 400 * imageSize) / imageRealSize) -
-						image.size >
+						image.size / 3 >
 						imageHeight
 				return t
 			}).length > 1

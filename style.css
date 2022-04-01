@@ -1,5 +1,6 @@
 .single-item__image {
 	position: relative;
+	overflow: hidden;
 }
 
 .single-item__slots {
