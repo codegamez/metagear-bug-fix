@@ -37,19 +37,19 @@ const imageScale = 0.72
 const images = {
 	weapon: {
 		size: 47 * imageScale,
-		link: "https://s23.picofile.com/file/8448746792/weapon.png",
+		link: "https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/weapon.png",
 		bottom: 0 * imageScale,
 		left: 0 * imageScale,
 	},
 	gadget: {
 		size: 41 * imageScale,
-		link: "https://s23.picofile.com/file/8448746784/gadget.png",
+		link: "https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/gadget.png",
 		bottom: 0 * imageScale,
 		left: 0 * imageScale,
 	},
 	wheel: {
 		size: 68 * imageScale,
-		link: "https://s22.picofile.com/file/8448746768/wheel.png",
+		link: "https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/wheel.png",
 		bottom: 0 * imageScale,
 		left: 0 * imageScale,
 	},
