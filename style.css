@@ -1,0 +1,20 @@
+.single-item__image {
+	position: relative;
+}
+
+.single-item__slots {
+	position: absolute;
+	left: auto;
+	top: auto;
+	right: auto;
+	bottom: auto;
+}
+
+.single-item__slot {
+	position: absolute;
+	min-height: 0 !important;
+}
+
+.genesis-badge {
+	z-index: 1;
+}

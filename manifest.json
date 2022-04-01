@@ -1,0 +1,40 @@
+{
+	"name": "MetaGear Bug Fix",
+	"version": "0.0.1",
+	"manifest_version": 3,
+	"description": "this is an unofficial extension and has no connection to the metagear team. I just create it to solve some of my problems with the website.",
+	"homepage_url": "https://codegames.ir",
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://apps.metagear.game/*",
+				"http://apps.metagear.game/*"
+			],
+			"js": ["foreground.js"]
+		},
+		{
+			"matches": [
+				"https://apps.metagear.game/*",
+				"http://apps.metagear.game/*"
+			],
+			"css": ["style.css"]
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["script.js", "style.css"],
+			"matches": [
+				"https://apps.metagear.game/*",
+				"http://apps.metagear.game/*"
+			]
+		}
+	],
+	"permissions": ["activeTab"],
+	"host_permissions": [
+		"https://apps.metagear.game/*",
+		"http://apps.metagear.game/*"
+	]
+}
