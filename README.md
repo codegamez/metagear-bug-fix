@@ -1,0 +1,6 @@
+# metagear-bug-fix
+this is an unofficial extension and has no connection to the metagear team. I just create it to solve some of my problems with the website.
+
+✅ show chassis slots position
+
+✅ fixing genesis badge z-index bug in machine parts details page
