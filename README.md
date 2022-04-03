@@ -2,7 +2,9 @@
 this is an unofficial extension and has no connection to the metagear team. I just create it to solve some of my problems with the website.
 
 ✅ showing chassis slots position
+
 ✅ adding search by item name to marketplace filters
+
 ✅ adding bsc scan button for NFT history to the machine part details page
 
 ### [Setup Manually](https://github.com/codegamez/metagear-bug-fix/blob/master/MANUAL-SETUP.md)
