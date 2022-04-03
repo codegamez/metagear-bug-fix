@@ -2,15 +2,7 @@ let localState = {
 	loading: false,
 	inSearch: false,
 }
-let state = {
-	price_orderby: "",
-	filter_rangeprice: [],
-	filter_rarity: [],
-	filter_blueprint: [],
-	filter_paymentmethod: [],
-	filter_listing_type: [],
-	filter_owner: "",
-}
+let state = {}
 
 const imageScale = 0.72
 const images = {
@@ -42,6 +34,18 @@ const intervalId = setInterval(() => {
 	if (!targetElement) return
 	const targetComp = findReact(targetElement)
 	state = (targetComp && targetComp.state) || state
+
+	if (!state.filters_storage) {
+		state.filters_storage = {
+			price_orderby: "",
+			filter_rangeprice: [],
+			filter_rarity: [],
+			filter_blueprint: [],
+			filter_paymentmethod: [],
+			filter_listing_type: [],
+			filter_owner: "",
+		}
+	}
 
 	if (
 		state &&
@@ -79,7 +83,7 @@ const intervalId = setInterval(() => {
 			el.id = "single-item__bscscan"
 			el.href = `https://bscscan.com/token/0x3e3aef91d5c253387f57ef537b3b0de20afc455e?a=${detail.item.id}`
 			el.innerText = "BSC Scan"
-			el.classList.add("mb-2")
+			el.classList.add("mb-2", "mt-2")
 			el.classList.add("d-inline-block")
 			detailLeftElement.appendChild(el)
 		}
