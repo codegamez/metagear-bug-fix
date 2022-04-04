@@ -1,3 +1,13 @@
+console.log(`
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::                                                         ::
+::          MetaGear Website Bug Fix (UNOFFICIAL)          ::
+::                                                         ::
+::  GitHub: https://github.com/codegamez/metagear-bug-fix  ::
+::                                                         ::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+`)
+
 // script states
 let localState = {
 	loading: false,
@@ -17,12 +27,14 @@ let state = {}
 
 // main loop
 const intervalId = setInterval(() => {
+	// get react main component
 	const targetElement = document.querySelector("#main-content")
 	if (!targetElement) return
 	const targetComp = findReact(targetElement)
+
+	// get website state
 	oldState = state
 	state = (targetComp && targetComp.state) || state
-
 	if (!state.filters_storage) {
 		state.filters_storage = {
 			price_orderby: "",
@@ -35,6 +47,7 @@ const intervalId = setInterval(() => {
 		}
 	}
 
+	// doing some changes in the website
 	addMachinePartSlots()
 	addBSCScanButton()
 	addDetailAttributes()
@@ -111,6 +124,8 @@ function addMachinePartSlots() {
 	let slotsElement = document.querySelector(".single-item__slots")
 
 	if (!detail || !ctrElement || slotsElement) return
+
+	console.log("addMachinePartSlots")
 
 	const slots = detail.item.gameData.slots || []
 
@@ -198,22 +213,27 @@ function addBSCScanButton() {
 	const detailLeftElement = document.querySelector(".single-item__thumbnail")
 
 	if (
-		detailLeftElement &&
-		detail.item.contract == "0x3e3aef91d5c253387f57ef537b3b0de20afc455e"
+		!detailLeftElement ||
+		detail.item.contract != "0x3e3aef91d5c253387f57ef537b3b0de20afc455e"
 	) {
-		const bscscanElement = detailLeftElement.querySelector(
-			"#single-item__bscscan"
-		)
-		if (!bscscanElement) {
-			const el = document.createElement("a")
-			el.id = "single-item__bscscan"
-			el.href = `https://bscscan.com/token/0x3e3aef91d5c253387f57ef537b3b0de20afc455e?a=${detail.item.id}`
-			el.innerText = "BSC Scan"
-			el.classList.add("mb-2", "mt-2")
-			el.classList.add("d-inline-block")
-			detailLeftElement.appendChild(el)
-		}
+		return
 	}
+
+	const bscscanElement = detailLeftElement.querySelector(
+		"#single-item__bscscan"
+	)
+
+	if (bscscanElement) return
+
+	console.log("addBSCScanButton")
+
+	const el = document.createElement("a")
+	el.id = "single-item__bscscan"
+	el.href = `https://bscscan.com/token/0x3e3aef91d5c253387f57ef537b3b0de20afc455e?a=${detail.item.id}`
+	el.innerText = "BSC Scan"
+	el.classList.add("mb-2", "mt-2")
+	el.classList.add("d-inline-block")
+	detailLeftElement.appendChild(el)
 }
 // adding bsc scan button for NFT history - END
 
@@ -241,6 +261,7 @@ function addDetailAttributes() {
 
 // adding search items to marketplace filters - START
 function addSearchFilters() {
+	// search on website filters change
 	if (
 		Object.keys(oldState).length &&
 		JSON.stringify(oldState) != JSON.stringify(state)
@@ -277,42 +298,9 @@ function addSearchFilters() {
 	let listingItemsSecondElement = document.querySelector(
 		".listing-grid .row:nth-child(2)"
 	)
-	let listingLoadingElement = document.querySelector(
-		".listing-grid .row:nth-child(3)"
-	)
-
-	let searchNameElement = document.querySelector("#cg-search-field-name")
-	let searchNameMessageElement = document.querySelector(
-		"#cg-search-field-name-message"
-	)
-
-	let searchGenesisElement = document.querySelector(
-		"#cg-search-field-genesis"
-	)
-	let searchGenesisMessageElement = document.querySelector(
-		"#cg-search-field-genesis-message"
-	)
-
-	let searchLevelFromElement = document.querySelector(
-		"#cg-search-field-level-from"
-	)
-	let searchLevelToElement = document.querySelector(
-		"#cg-search-field-level-to"
-	)
-	let searchLevelMessageElement = document.querySelector(
-		"#cg-search-field-level-message"
-	)
-
-	let searchEnergyFromElement = document.querySelector(
-		"#cg-search-field-energy-from"
-	)
-	let searchEnergyToElement = document.querySelector(
-		"#cg-search-field-energy-to"
-	)
-	let searchEnergyMessageElement = document.querySelector(
-		"#cg-search-field-energy-message"
-	)
-
+	if (!listingItemsSecondElement) {
+		console.log("addSearchFilters")
+	}
 	if (!listingItemsSecondElement) {
 		const el = document.createElement("div")
 		el.classList.add("row")
@@ -324,6 +312,9 @@ function addSearchFilters() {
 		listingItemsSecondElement.classList.add("hidden")
 	}
 
+	let listingLoadingElement = document.querySelector(
+		".listing-grid .row:nth-child(3)"
+	)
 	if (!listingLoadingElement) {
 		const el = document.createElement("div")
 		el.classList.add("row")
@@ -356,6 +347,16 @@ function addSearchFilters() {
 		listingLoadingElement.classList.add("hidden")
 	}
 
+	// adding energy filter
+	let searchEnergyFromElement = document.querySelector(
+		"#cg-search-field-energy-from"
+	)
+	let searchEnergyToElement = document.querySelector(
+		"#cg-search-field-energy-to"
+	)
+	let searchEnergyMessageElement = document.querySelector(
+		"#cg-search-field-energy-message"
+	)
 	if (!searchEnergyFromElement || !searchEnergyToElement) {
 		const el = document.createElement("div")
 		el.classList.add("widget")
@@ -403,6 +404,16 @@ function addSearchFilters() {
 		})
 	}
 
+	// adding level filter
+	let searchLevelFromElement = document.querySelector(
+		"#cg-search-field-level-from"
+	)
+	let searchLevelToElement = document.querySelector(
+		"#cg-search-field-level-to"
+	)
+	let searchLevelMessageElement = document.querySelector(
+		"#cg-search-field-level-message"
+	)
 	if (!searchLevelFromElement || !searchLevelToElement) {
 		const el = document.createElement("div")
 		el.classList.add("widget")
@@ -450,6 +461,13 @@ function addSearchFilters() {
 		})
 	}
 
+	// adding genesis filter
+	let searchGenesisElement = document.querySelector(
+		"#cg-search-field-genesis"
+	)
+	let searchGenesisMessageElement = document.querySelector(
+		"#cg-search-field-genesis-message"
+	)
 	if (!searchGenesisElement) {
 		const el = document.createElement("div")
 		el.classList.add("widget")
@@ -486,6 +504,11 @@ function addSearchFilters() {
 		})
 	}
 
+	// adding name filter
+	let searchNameElement = document.querySelector("#cg-search-field-name")
+	let searchNameMessageElement = document.querySelector(
+		"#cg-search-field-name-message"
+	)
 	if (!searchNameElement) {
 		const el = document.createElement("div")
 		el.classList.add("widget")
