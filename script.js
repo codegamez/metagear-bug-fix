@@ -3,6 +3,8 @@ let localState = {
 	loading: false,
 	inSearch: false,
 	searchFetched: false,
+	searchName: "",
+	searchGenesis: false,
 	levelFrom: null,
 	levelTo: null,
 	energyFrom: null,
@@ -286,6 +288,13 @@ function addSearchFilters() {
 		"#cg-search-field-name-message"
 	)
 
+	let searchGenesisElement = document.querySelector(
+		"#cg-search-field-genesis"
+	)
+	let searchGenesisMessageElement = document.querySelector(
+		"#cg-search-field-genesis-message"
+	)
+
 	let searchLevelFromElement = document.querySelector(
 		"#cg-search-field-level-from"
 	)
@@ -443,6 +452,42 @@ function addSearchFilters() {
 		})
 	}
 
+	if (!searchGenesisElement) {
+		const el = document.createElement("div")
+		el.classList.add("widget")
+		el.innerHTML = `
+		<p class="widget-title">Genesis</p>
+		<div class="widget-content">
+			<ul class="check-list list-type">
+				<li class="chosen">
+					<label for="cg-search-field-genesis">
+						<input type="checkbox" 
+							name="listing_type[]" 
+							id="cg-search-field-genesis" 
+							value="buy_now"> 
+							Genesis
+					</label>
+				</li>
+			</ul>
+			<span id="cg-search-field-genesis-message" class="text-white">${message}</span>
+		</div>
+		`
+		document.querySelector(".widget:nth-child(2)").after(el)
+		searchGenesisElement = document.querySelector(
+			"#cg-search-field-genesis"
+		)
+		searchGenesisMessageElement = document.querySelector(
+			"#cg-search-field-genesis-message"
+		)
+		searchGenesisElement.addEventListener("change", (e) => {
+			localState = {
+				...localState,
+				searchGenesis: e.target.checked || false,
+			}
+			search()
+		})
+	}
+
 	if (!searchNameElement) {
 		const el = document.createElement("div")
 		el.classList.add("widget")
@@ -475,6 +520,7 @@ function addSearchFilters() {
 	if (
 		!localState.loading &&
 		!localState.searchName &&
+		!localState.searchGenesis &&
 		!localState.levelFrom &&
 		!localState.levelTo &&
 		!localState.energyFrom &&
@@ -511,6 +557,9 @@ function addSearchFilters() {
 		searchNameElement.classList.add("d-none")
 		searchNameMessageElement.classList.remove("d-none")
 
+		searchGenesisElement.classList.add("d-none")
+		searchGenesisMessageElement.classList.remove("d-none")
+
 		searchLevelFromElement.classList.add("d-none")
 		searchLevelToElement.classList.add("d-none")
 		searchLevelMessageElement.classList.remove("d-none")
@@ -521,6 +570,9 @@ function addSearchFilters() {
 	} else {
 		searchNameElement.classList.remove("d-none")
 		searchNameMessageElement.classList.add("d-none")
+
+		searchGenesisElement.classList.remove("d-none")
+		searchGenesisMessageElement.classList.add("d-none")
 
 		searchLevelFromElement.classList.remove("d-none")
 		searchLevelToElement.classList.remove("d-none")
@@ -536,6 +588,7 @@ async function search() {
 
 	const hasFilter =
 		localState.searchName ||
+		localState.searchGenesis ||
 		localState.levelFrom ||
 		localState.levelTo ||
 		localState.energyFrom ||
@@ -650,12 +703,22 @@ async function search() {
 	}
 }
 function updateItemsSencondList() {
+	console.log(localState.listings)
 	items = localState.listings
 		.filter((v) =>
 			v.item.metadata.name
 				.toLowerCase()
 				.includes((localState.searchName || "").toLowerCase())
 		)
+		.filter((v) => {
+			const is_forever = v.item.metadata.attributes.find(
+				(t) => t.trait_type == "is_forever"
+			)
+			console.log(is_forever)
+
+			if (!is_forever) return false
+			return !localState.searchGenesis || +is_forever.value
+		})
 		.filter((v) => {
 			const level = v.item.metadata.attributes.find(
 				(t) => t.trait_type == "level"
