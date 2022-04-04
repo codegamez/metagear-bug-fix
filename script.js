@@ -112,8 +112,6 @@ function addMachinePartSlots() {
 
 	if (!detail || !ctrElement || slotsElement) return
 
-	console.log(ctrElement, slotsElement)
-
 	const slots = detail.item.gameData.slots || []
 
 	const imageElement = ctrElement.querySelector("img")
@@ -703,7 +701,6 @@ async function search() {
 	}
 }
 function updateItemsSencondList() {
-	console.log(localState.listings)
 	items = localState.listings
 		.filter((v) =>
 			v.item.metadata.name
@@ -714,8 +711,6 @@ function updateItemsSencondList() {
 			const is_forever = v.item.metadata.attributes.find(
 				(t) => t.trait_type == "is_forever"
 			)
-			console.log(is_forever)
-
 			if (!is_forever) return false
 			return !localState.searchGenesis || +is_forever.value
 		})
