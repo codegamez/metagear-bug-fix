@@ -3,7 +3,7 @@ this is an unofficial extension and has no connection to the metagear team. I ju
 
 ✅ showing chassis slots position
 
-✅ adding search by item name to marketplace filters
+✅ adding search by item name, level, energy to marketplace filters
 
 ✅ adding bsc scan button for NFT history to the machine part details page
 
@@ -11,4 +11,4 @@ this is an unofficial extension and has no connection to the metagear team. I ju
 
 ![](https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/Screenshot-20220402010139-1308x817.png)
 
-![](https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/Screenshot-20220403201452-423x204.png)
+![](https://raw.githubusercontent.com/codegamez/metagear-bug-fix/master/images/filters-preview.png)
