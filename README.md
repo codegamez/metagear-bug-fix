@@ -3,7 +3,7 @@ this is an unofficial extension and has no connection to the metagear team. I ju
 
 ✅ showing chassis slots position
 
-✅ adding search by item name, level, energy to marketplace filters
+✅ adding search by item name, genesis, level, energy to marketplace filters
 
 ✅ adding bsc scan button for NFT history to the machine part details page
 
