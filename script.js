@@ -692,12 +692,6 @@ async function search() {
 									state.filters_storage.filter_blueprint ||
 									[],
 							},
-							state.filters_storage.filter_blueprint.length && {
-								type: "type",
-								value:
-									state.filters_storage.filter_blueprint ||
-									[],
-							},
 							{ type: "status", value: ["1"] },
 						].filter((v) => v),
 					}),
@@ -802,11 +796,26 @@ function updateItemsSencondList() {
 			let seller = item.seller
 			seller = seller.substr(0, 7) + "..." + seller.substr(30, 12)
 
+			let duration = (+item.rentPeriod || 0) / 86400
+			let durationSign = duration > 1 ? "days" : "day"
+
+			let type =
+				item.item.metadata.attributes.find(
+					(v) => v.trait_type == "type"
+				) || null
+			if (type) type = type.value
+
+			const isFixed = item.listingType == "buy_now"
 			const isAction = item.listingType == "auction"
+			const isRent = item.listingType == "rent"
 
 			return `
-				<div class="listing-type-buy_now gear-item-wrap col-xl-4 col-md-6">
-					<a class="gear-item gear-type-chassis gear-group-gameitem" 
+				<div class="
+						listing-type-${item.listingType} 
+						gear-type-${type}
+						gear-item-wrap col-xl-4 col-md-6
+					">
+					<a class="gear-item gear-group-gameitem" 
 							href="/marketplace/${item.id}">
 						<div class="gear-item-content has_quality">
 							<div class="gear-item-header">
@@ -831,7 +840,7 @@ function updateItemsSencondList() {
 									<img src="${item.item.metadata.image}" class="">
 								</div>
 								<div class="gear-author">Owner: ${seller}</div>
-								<div class="button-wrap ${isAction ? "d-none" : ""}">
+								<div class="button-wrap ${isFixed ? "" : "d-none"}">
 									<div class="button button-red button-hover-green">
 										<div class="button-text button-gear">${price} ${item.paymentSymbol}</div>
 									</div>
@@ -853,6 +862,35 @@ function updateItemsSencondList() {
 										<div>
 											<strong class="text-blue fs-5 buy-now-price">
 												${price} ${item.paymentSymbol}
+											</strong>
+										</div>
+									</div>
+								</div>
+								<div class="third-font auction-list-wrap rent-list-wrap ${
+									isRent ? "" : "d-none"
+								}">
+									<div class="d-flex justify-content-center">
+										<span class="auction-label rent-label">
+											For Rent
+										</span>
+									</div>
+									<div class="d-flex justify-content-between w-100 align-items-center">
+										<div class="rent-label-text">
+											PRICE
+										</div>
+										<div>
+											<strong class="text-blue fs-6 start-price">
+												${price} ${item.paymentSymbol}
+											</strong>
+										</div>
+									</div>
+									<div class="d-flex justify-content-between w-100 align-items-center">
+										<div class="rent-label-text">
+											DURATION
+										</div>
+										<div>
+											<strong class="text-blue fs-5 buy-now-price">
+												${duration} ${durationSign}
 											</strong>
 										</div>
 									</div>
