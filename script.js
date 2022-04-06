@@ -14,7 +14,6 @@ let localState = {
 	inSearch: false,
 	searchFetched: false,
 	searchName: "",
-	searchGenesis: false,
 	levelFrom: null,
 	levelTo: null,
 	energyFrom: null,
@@ -461,48 +460,7 @@ function addSearchFilters() {
 		})
 	}
 
-	// adding genesis filter
-	let searchGenesisElement = document.querySelector(
-		"#cg-search-field-genesis"
-	)
-	let searchGenesisMessageElement = document.querySelector(
-		"#cg-search-field-genesis-message"
-	)
-	if (!searchGenesisElement) {
-		const el = document.createElement("div")
-		el.classList.add("widget")
-		el.innerHTML = `
-		<p class="widget-title">Genesis</p>
-		<div class="widget-content">
-			<ul class="check-list list-type">
-				<li class="chosen">
-					<label for="cg-search-field-genesis">
-						<input type="checkbox" 
-							name="listing_type[]" 
-							id="cg-search-field-genesis" 
-							value="buy_now"> 
-							Genesis
-					</label>
-				</li>
-			</ul>
-			<span id="cg-search-field-genesis-message" class="text-white">${message}</span>
-		</div>
-		`
-		document.querySelector(".widget:nth-child(2)").after(el)
-		searchGenesisElement = document.querySelector(
-			"#cg-search-field-genesis"
-		)
-		searchGenesisMessageElement = document.querySelector(
-			"#cg-search-field-genesis-message"
-		)
-		searchGenesisElement.addEventListener("change", (e) => {
-			localState = {
-				...localState,
-				searchGenesis: e.target.checked || false,
-			}
-			search()
-		})
-	}
+	// adding genesis filter - added by the metagear team
 
 	// adding name filter
 	let searchNameElement = document.querySelector("#cg-search-field-name")
@@ -541,7 +499,6 @@ function addSearchFilters() {
 	if (
 		!localState.loading &&
 		!localState.searchName &&
-		!localState.searchGenesis &&
 		!localState.levelFrom &&
 		!localState.levelTo &&
 		!localState.energyFrom &&
@@ -578,9 +535,6 @@ function addSearchFilters() {
 		searchNameElement.classList.add("d-none")
 		searchNameMessageElement.classList.remove("d-none")
 
-		searchGenesisElement.classList.add("d-none")
-		searchGenesisMessageElement.classList.remove("d-none")
-
 		searchLevelFromElement.classList.add("d-none")
 		searchLevelToElement.classList.add("d-none")
 		searchLevelMessageElement.classList.remove("d-none")
@@ -591,9 +545,6 @@ function addSearchFilters() {
 	} else {
 		searchNameElement.classList.remove("d-none")
 		searchNameMessageElement.classList.add("d-none")
-
-		searchGenesisElement.classList.remove("d-none")
-		searchGenesisMessageElement.classList.add("d-none")
 
 		searchLevelFromElement.classList.remove("d-none")
 		searchLevelToElement.classList.remove("d-none")
@@ -609,7 +560,6 @@ async function search() {
 
 	const hasFilter =
 		localState.searchName ||
-		localState.searchGenesis ||
 		localState.levelFrom ||
 		localState.levelTo ||
 		localState.energyFrom ||
@@ -725,13 +675,6 @@ function updateItemsSencondList() {
 				.includes((localState.searchName || "").toLowerCase())
 		)
 		.filter((v) => {
-			const is_forever = v.item.metadata.attributes.find(
-				(t) => t.trait_type == "is_forever"
-			)
-			if (!is_forever) return false
-			return !localState.searchGenesis || +is_forever.value
-		})
-		.filter((v) => {
 			const level = v.item.metadata.attributes.find(
 				(t) => t.trait_type == "level"
 			)
@@ -772,11 +715,13 @@ function updateItemsSencondList() {
 					(v) => v.trait_type == "quality"
 				) || null
 			if (quality) quality = quality.value || ""
+
 			let is_forever =
 				item.item.metadata.attributes.find(
 					(v) => v.trait_type == "is_forever"
 				) || null
 			if (is_forever) is_forever = +is_forever.value
+
 			let quantity = +item.quantity || 1
 
 			let minPrice = item.minPrice
@@ -805,6 +750,12 @@ function updateItemsSencondList() {
 				) || null
 			if (type) type = type.value
 
+			let level =
+				item.item.metadata.attributes.find(
+					(v) => v.trait_type == "level"
+				) || null
+			if (level) level = +level.value
+
 			const isFixed = item.listingType == "buy_now"
 			const isAction = item.listingType == "auction"
 			const isRent = item.listingType == "rent"
@@ -832,6 +783,13 @@ function updateItemsSencondList() {
 									<div class="gear-badge ${quality_badges[quality] || ""}">
 										<span class="badge-inner">
 											${quality}
+										</span>
+									</div>
+								</div>
+								<div class="gear-badges gear-badge-level ${level ? "" : "d-none"}">
+									<div class="gear-badge">
+										<span class="badge-inner">
+											${level}
 										</span>
 									</div>
 								</div>
