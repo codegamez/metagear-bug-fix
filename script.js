@@ -24,16 +24,18 @@ let localState = {
 let oldState = {}
 let state = {}
 
+var react = null
+
 // main loop
 const intervalId = setInterval(() => {
 	// get react main component
 	const targetElement = document.querySelector("#main-content")
 	if (!targetElement) return
-	const targetComp = findReact(targetElement)
+	react = findReact(targetElement)
 
 	// get website state
 	oldState = state
-	state = (targetComp && targetComp.state) || state
+	state = (react && react.state) || state
 	if (!state.filters_storage) {
 		state.filters_storage = {
 			price_orderby: "",
@@ -261,16 +263,19 @@ function addDetailAttributes() {
 // adding search items to marketplace filters - START
 function addSearchFilters() {
 	// search on website filters change
-	if (
-		Object.keys(oldState).length &&
-		JSON.stringify(oldState) != JSON.stringify(state)
-	) {
-		localState = {
-			...localState,
-			searchFetched: false,
+
+	try {
+		if (
+			Object.keys(oldState).length &&
+			JSON.stringify(oldState) != JSON.stringify(state)
+		) {
+			localState = {
+				...localState,
+				searchFetched: false,
+			}
+			search()
 		}
-		search()
-	}
+	} catch (e) {}
 
 	const message =
 		"select at least one option from the GEAR or RARITY filters."
@@ -613,7 +618,7 @@ async function search() {
 					},
 					body: JSON.stringify({
 						page: page,
-						size: 80,
+						size: 100,
 						orderBy: orderBy || "createdTime",
 						orderDirection: orderDirection || "desc",
 						filters: [
@@ -868,26 +873,11 @@ function updateItemsSencondList() {
 // utils - START
 const findReact = (dom, traverseUp = 0) => {
 	const key = Object.keys(dom).find((key) => {
-		return (
-			key.startsWith("__reactFiber$") || // react 17+
-			key.startsWith("__reactInternalInstance$") // react <17
-		)
+		return key.startsWith("__reactFiber$")
 	})
 	const domFiber = dom[key]
 	if (domFiber == null) return null
-
-	// react <16
-	if (domFiber._currentElement) {
-		let compFiber = domFiber._currentElement._owner
-		for (let i = 0; i < traverseUp; i++) {
-			compFiber = compFiber._currentElement._owner
-		}
-		return compFiber._instance
-	}
-
-	// react 16+
 	const GetCompFiber = (fiber) => {
-		//return fiber._debugOwner; // this also works, but is __DEV__ only
 		let parentFiber = fiber.return
 		while (typeof parentFiber.type == "string") {
 			parentFiber = parentFiber.return
