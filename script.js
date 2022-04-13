@@ -622,17 +622,27 @@ async function search() {
 						orderBy: orderBy || "createdTime",
 						orderDirection: orderDirection || "desc",
 						filters: [
+							state.filters_storage.filter_rarity.length && {
+								type: "quality",
+								value:
+									state.filters_storage.filter_rarity || [],
+							},
+							state.filters_storage.filter_owner && {
+								type: "seller",
+								value: [state.filters_storage.filter_owner],
+							},
+							state.filters_storage.filter_blueprint.length && {
+								type: "type",
+								value:
+									state.filters_storage.filter_blueprint ||
+									[],
+							},
 							state.filters_storage.filter_paymentmethod
 								.length && {
 								type: "paymentMethod",
 								value:
 									state.filters_storage
 										.filter_paymentmethod || [],
-							},
-							state.filters_storage.filter_rarity.length && {
-								type: "quality",
-								value:
-									state.filters_storage.filter_rarity || [],
 							},
 							state.filters_storage.filter_listing_type
 								.length && {
@@ -641,10 +651,15 @@ async function search() {
 									state.filters_storage.filter_listing_type ||
 									[],
 							},
-							state.filters_storage.filter_blueprint.length && {
-								type: "type",
+							state.filters_storage.filter_machines.length && {
+								type: "isForever",
 								value:
-									state.filters_storage.filter_blueprint ||
+									state.filters_storage.filter_machines || [],
+							},
+							state.filters_storage.filter_rangeprice.length && {
+								type: "price",
+								value:
+									state.filters_storage.filter_rangeprice ||
 									[],
 							},
 							{ type: "status", value: ["1"] },
